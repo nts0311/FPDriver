@@ -1,7 +1,7 @@
-package com.sonnt.fpdriver.data.network
+package com.sonnt.fpdriver.network
 
-import com.sonnt.fpdriver.data.dto.response.BaseResponse
-import com.sonnt.fpdriver.data.dto.response.asApiError
+import com.sonnt.fpdriver.network.dto.response.BaseResponse
+import com.sonnt.fpdriver.network.dto.response.asApiError
 import retrofit2.Response
 import java.lang.Exception
 

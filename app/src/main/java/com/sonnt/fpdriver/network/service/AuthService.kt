@@ -1,9 +1,9 @@
-package com.sonnt.fpdriver.data.service
+package com.sonnt.fpdriver.network.service
 
-import com.sonnt.fpdriver.data.dto.request.AuthRequest
-import com.sonnt.fpdriver.data.dto.request.UpdateFcmTokenRequest
-import com.sonnt.fpdriver.data.dto.response.AuthenticationResponse
-import com.sonnt.fpdriver.data.dto.response.BaseResponse
+import com.sonnt.fpdriver.network.dto.request.AuthRequest
+import com.sonnt.fpdriver.network.dto.request.UpdateFcmTokenRequest
+import com.sonnt.fpdriver.network.dto.response.AuthenticationResponse
+import com.sonnt.fpdriver.network.dto.response.BaseResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST

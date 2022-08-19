@@ -1,25 +1,23 @@
-package com.sonnt.fpdriver.data.network
+package com.sonnt.fpdriver.network
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.sonnt.fpdriver.data.service.AuthService
-
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.sonnt.fpdriver.data.local.AuthDataSource
+import com.sonnt.fpdriver.data.local.SharedPreferencesApi
+import com.sonnt.fpdriver.di.AppModule
+import com.sonnt.fpdriver.network.service.AuthService
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 
 object NetworkModule {
-    var moshi: Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-
     var retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("http://10.0.2.2:8081")
+        .baseUrl("https://0903-117-7-207-167.ap.ngrok.io")
         .client(OkHttpClient.Builder().addInterceptor {chain ->
-            val token = ""
+            val token = AuthDataSource.authToken
             val request = chain.request().newBuilder().addHeader("Authorization", "Bearer ${token}").build()
             chain.proceed(request)
         }.build())
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .addConverterFactory(GsonConverterFactory.create(AppModule.provideGson()))
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .build()
 

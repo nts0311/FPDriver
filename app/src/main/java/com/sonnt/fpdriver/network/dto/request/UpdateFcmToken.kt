@@ -1,3 +1,3 @@
-package com.sonnt.fpdriver.data.dto.request
+package com.sonnt.fpdriver.network.dto.request
 
 data class UpdateFcmTokenRequest(val fcmToken: String = "")

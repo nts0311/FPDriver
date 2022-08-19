@@ -1,6 +1,6 @@
-package com.sonnt.fpdriver.data.dto.response
+package com.sonnt.fpdriver.network.dto.response
 
-import com.sonnt.fpdriver.data.network.ApiError
+import com.sonnt.fpdriver.network.ApiError
 
 open class BaseResponse(
     val httpStatus: Int? = null,

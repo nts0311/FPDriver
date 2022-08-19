@@ -1,4 +1,4 @@
-package com.sonnt.fpdriver.data.dto.response
+package com.sonnt.fpdriver.network.dto.response
 
 data class AuthenticationResponse(
     var userId: Long = 0L,
