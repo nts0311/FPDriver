@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object NetworkModule {
     var retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("https://0903-117-7-207-167.ap.ngrok.io")
+        .baseUrl("https://ec90-2402-800-6172-89f3-d72-a379-4153-251.ap.ngrok.io")
         .client(OkHttpClient.Builder().addInterceptor {chain ->
             val token = AuthDataSource.authToken
             val request = chain.request().newBuilder().addHeader("Authorization", "Bearer ${token}").build()

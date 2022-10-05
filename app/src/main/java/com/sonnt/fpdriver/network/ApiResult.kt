@@ -13,8 +13,7 @@ data class ApiError(
 
 sealed class ApiResult<T> {
     class Success<T>(var data: T?): ApiResult<T>()
-    class Failed<T>(error: ApiError?): ApiResult<T>()
-    class Loading(): ApiResult<Unit>()
+    class Failed<T>(val error: ApiError?): ApiResult<T>()
 }
 
 suspend fun <T> callApi(call: suspend () -> Response<T>): ApiResult<T?> where T: BaseResponse {
@@ -33,6 +32,7 @@ suspend fun <T> callApi(call: suspend () -> Response<T>): ApiResult<T?> where T:
         } else {
             val baseResponse = (responseBody as? BaseResponse?) ?: return ApiResult.Failed(ApiError(message = "An error has occurred!"))
             return if (result.code() == 401) {
+
                 ApiResult.Failed(baseResponse.asApiError())
             } else {
                 ApiResult.Failed(baseResponse.asApiError())

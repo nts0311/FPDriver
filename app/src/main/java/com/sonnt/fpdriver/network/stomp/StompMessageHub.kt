@@ -18,7 +18,7 @@ import ua.naiksoftware.stomp.dto.StompHeader
 import ua.naiksoftware.stomp.dto.StompMessage
 
 class StompMessageHub {
-    private val stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, "https://0903-117-7-207-167.ap.ngrok.io/stomp")
+    private val stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, "https://ec90-2402-800-6172-89f3-d72-a379-4153-251.ap.ngrok.io/")
     private val gson = AppModule.provideGson()
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
     private val subscriberFlows = mutableMapOf<String, SharedFlow<*>>()
@@ -33,11 +33,13 @@ class StompMessageHub {
             subscriberFlows[destination] = stompClient.topic(destination).asFlow().map { topicMessage ->
                 val jsonStr = topicMessage.payload
 
+                val wsMessage = gson.fromJson(jsonStr, WSMessage::class.java)
+
                 if (clazz == String::class.java) {
-                    return@map jsonStr
+                    return@map wsMessage.body
                 }
 
-                gson.fromJson(jsonStr, clazz)
+                gson.fromJson(wsMessage.body, clazz)
             }.conflate().shareIn(coroutineScope, SharingStarted.Eagerly, 0)
         }
 

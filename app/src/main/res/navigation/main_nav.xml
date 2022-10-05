@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    app:startDestination="@id/ordersFragment">
+
+    <fragment
+        android:id="@+id/ordersFragment"
+        android:name="com.sonnt.fpdriver.features.orders.OrdersFragment"
+        android:label="fragment_orders"
+        tools:layout="@layout/fragment_orders" >
+        <action
+            android:id="@+id/orders_next_action"
+            app:destination="@id/ordersStep2Fragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/ordersFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/ordersStep2Fragment"
+        android:name="com.sonnt.fpdriver.features.orders_step2.OrdersStep2Fragment"
+        android:label="fragment_orders_step2"
+        tools:layout="@layout/fragment_orders_step2" />
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.sonnt.fpdriver.features.map.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" />
+    <fragment
+        android:id="@+id/personalFragment"
+        android:name="com.sonnt.fpdriver.features.personal.PersonalFragment"
+        android:label="fragment_personal"
+        tools:layout="@layout/fragment_personal" />
+</navigation>
