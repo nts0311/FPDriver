@@ -16,38 +16,4 @@ import kotlinx.coroutines.launch
 
 class MainActivityViewModel: BaseViewModel() {
 
-
-
-//    val stompMessageHub = AppModule.provideStompMessageHub()
-//    var count = 0
-//
-//    val latestMessage = stompMessageHub.subscribeTo("/users/driver/newOrderRequest", OrderInfo::class.java)
-//        .map { "${it.createdDate} - ${it.paymentInfo.price}" }
-//        .asLiveData()
-//
-//    //val latestMessage = MutableLiveData("dfas")
-//
-//    init {
-//        setupMessage()
-//    }
-//
-//    fun setupMessage() {
-//        viewModelScope.launch {
-//            val authenticationResponse = callApi {
-//                NetworkModule.authService.login(AuthRequest("driver", "123456"))
-//            }
-//            if (authenticationResponse is ApiResult.Success) {
-//                authenticationResponse.data?.also {
-//                    AuthDataSource.authToken = it.jwtToken
-//                }
-//            }
-//        }
-//    }
-//
-//    fun sendMessage(view: View) {
-//        stompMessageHub.sendJson(SimpleMessage("son1", "Hello iphone: ${count++}"), "/app/hello").onEach {
-//            Log.e("aAA", "send done")
-//        }
-//            .launchIn(viewModelScope)
-//    }
 }

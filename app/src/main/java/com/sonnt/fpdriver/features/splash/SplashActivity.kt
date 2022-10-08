@@ -27,7 +27,7 @@ class SplashActivity : AppCompatActivity() {
 
     private fun toLoginScreen() {
 
-        if (AuthDataSource.authToken.isEmpty()) {
+        /*if (AuthDataSource.authToken.isEmpty()) {
             val intent = Intent(this, LoginActivity::class.java)
             intent.extras?.putBoolean("from_splash", true)
             intent.putExtra("from_splash", true)
@@ -35,7 +35,12 @@ class SplashActivity : AppCompatActivity() {
         } else {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
-        }
+        }*/
+
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.extras?.putBoolean("from_splash", true)
+        intent.putExtra("from_splash", true)
+        startActivity(intent)
 
         finish()
     }

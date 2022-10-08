@@ -6,7 +6,13 @@ data class OrderedProductItem(
     val name: String,
     val num: Int,
     val attributes: List<String>
-)
+) {
+    fun attrsAsString(): String {
+        return attributes.fold("") {init, value ->
+            return@fold if(init != "") "$init\n$value" else value
+        }
+    }
+}
 
 class OrderEstimatedRouteInfo(
     var id: Long = 0,

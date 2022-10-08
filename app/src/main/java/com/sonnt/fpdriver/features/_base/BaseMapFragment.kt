@@ -6,6 +6,7 @@ import android.graphics.Canvas
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -15,7 +16,7 @@ import com.sonnt.fpdriver.R
 import com.sonnt.fpdriver.model.FPMapMarker
 
 
-open class BaseMapFragment: BaseFragment() {
+abstract class BaseMapFragment<T: ViewDataBinding>: BaseFragment<T>() {
 
     protected lateinit var mapFragment: SupportMapFragment
     protected lateinit var googleMap: GoogleMap
@@ -70,8 +71,8 @@ open class BaseMapFragment: BaseFragment() {
 
     private fun  bitmapDescriptorFromVector(vectorResId:Int): BitmapDescriptor {
         var vectorDrawable = ContextCompat.getDrawable(requireContext(), vectorResId);
-        vectorDrawable!!.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
-        var bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        vectorDrawable!!.setBounds(0, 0, vectorDrawable.intrinsicWidth, vectorDrawable.intrinsicHeight);
+        var bitmap = Bitmap.createBitmap(vectorDrawable.intrinsicWidth, vectorDrawable.intrinsicHeight, Bitmap.Config.ARGB_8888);
         var canvas =  Canvas(bitmap);
         vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);

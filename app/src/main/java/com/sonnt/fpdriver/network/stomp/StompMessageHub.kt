@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.util.Log
 import com.sonnt.fpdriver.data.local.AuthDataSource
 import com.sonnt.fpdriver.di.AppModule
+import com.sonnt.fpdriver.network.Endpoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -13,22 +14,38 @@ import kotlinx.coroutines.reactive.asFlow
 import okhttp3.MediaType
 import ua.naiksoftware.stomp.Stomp
 import ua.naiksoftware.stomp.StompClient
+import ua.naiksoftware.stomp.dto.LifecycleEvent
 import ua.naiksoftware.stomp.dto.StompCommand
 import ua.naiksoftware.stomp.dto.StompHeader
 import ua.naiksoftware.stomp.dto.StompMessage
 
 class StompMessageHub {
-    private val stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, "https://ec90-2402-800-6172-89f3-d72-a379-4153-251.ap.ngrok.io/")
+    private lateinit var stompClient: StompClient
     private val gson = AppModule.provideGson()
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
     private val subscriberFlows = mutableMapOf<String, SharedFlow<*>>()
 
     init {
-        stompClient.connect(listOf(StompHeader("Authorization", "Bearer ${AuthDataSource.authToken}")))
+        connectWS()
+    }
+
+    private fun connectWS(onConnected: () -> Unit = {}) {
+        try {
+            stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, Endpoint.WS_BASE_URL)
+            stompClient.connect(listOf(StompHeader("Authorization", "Bearer ${AuthDataSource.authToken}")))
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     @SuppressLint("CheckResult")
-    fun <T> subscribeTo(destination: String, clazz: Class<T>): SharedFlow<T> {
+    fun <T> subscribeTo(destination: String, clazz: Class<T>): SharedFlow<T>? {
+
+//        if (!stompClient.isConnected) {
+//            return null
+//        }
+
         if (subscriberFlows[destination] == null) {
             subscriberFlows[destination] = stompClient.topic(destination).asFlow().map { topicMessage ->
                 val jsonStr = topicMessage.payload
@@ -43,7 +60,7 @@ class StompMessageHub {
             }.conflate().shareIn(coroutineScope, SharingStarted.Eagerly, 0)
         }
 
-        return subscriberFlows[destination] as SharedFlow<T>
+        return subscriberFlows[destination] as? SharedFlow<T>?
     }
 
     fun <T> sendJson(data: T, destination: String): Flow<Any> {
