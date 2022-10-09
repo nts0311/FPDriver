@@ -16,6 +16,7 @@ import com.sonnt.fpdriver.R
 import com.sonnt.fpdriver.data.local.AuthDataSource
 import com.sonnt.fpdriver.features.auth.LoginActivity
 import com.sonnt.fpdriver.features.main.MainActivity
+import com.sonnt.fpdriver.services.UpdateLocationService
 
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +42,8 @@ class SplashActivity : AppCompatActivity() {
         intent.extras?.putBoolean("from_splash", true)
         intent.putExtra("from_splash", true)
         startActivity(intent)
+
+        UpdateLocationService.start()
 
         finish()
     }

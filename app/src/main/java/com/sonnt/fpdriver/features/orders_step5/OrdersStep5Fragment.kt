@@ -1,15 +1,11 @@
 package com.sonnt.fpdriver.features.orders_step5
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.sonnt.fpdriver.R
-import com.sonnt.fpdriver.features._base.BaseMapFragment
 import com.sonnt.fpdriver.features.order_destination_info.OrdersDestinationInfoFragment
-import com.sonnt.fpdriver.model.Address
 import com.sonnt.fpdriver.model.FPMapMarker
 
 class OrdersStep5Fragment : OrdersDestinationInfoFragment() {
@@ -37,9 +33,12 @@ class OrdersStep5Fragment : OrdersDestinationInfoFragment() {
     }
 
     private fun getListMarkers(): List<FPMapMarker> {
+        val customerLocation =  viewModel.orderInfo?.toAddress ?: return listOf()
+        val merchantLocation = viewModel.orderInfo?.fromAddress ?: return listOf()
+
         return listOf(
-                FPMapMarker(viewModel.orderInfo?.toAddress?.lat!!, viewModel.orderInfo?.toAddress?.long!!, R.drawable.ic_customer_marker, "Khách hàng"),
-                FPMapMarker(viewModel.orderInfo?.fromAddress?.lat!!, viewModel.orderInfo?.fromAddress?.long!!, R.drawable.ic_merchant_marker, null)
+                FPMapMarker(customerLocation.lat ?: 0.0, customerLocation.lng ?: 0.0, R.drawable.ic_customer_marker, null),
+                FPMapMarker(merchantLocation.lat ?: 0.0, merchantLocation.lng ?: 0.0, R.drawable.ic_driver_marker, null)
         )
     }
 

@@ -1,12 +1,7 @@
 package com.sonnt.fpdriver.features.orders
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.sonnt.fpdriver.R
@@ -41,14 +36,14 @@ class OrdersFragment : BaseMapFragment<FragmentOrdersBinding>() {
 
     private fun setupData() {
         viewModel.orderInfo?.observe(viewLifecycleOwner) {
-            if (it.fromAddress.lat == null || it.fromAddress.long == null
-                || it.toAddress.lat == null || it.toAddress.long == null) {
+            if (it.fromAddress.lat == null || it.fromAddress.lng == null
+                || it.toAddress.lat == null || it.toAddress.lng == null) {
                 return@observe
             }
 
             listMarker = listOf(
-                FPMapMarker(it.toAddress.lat!!, it.toAddress.long!!, R.drawable.ic_customer_marker, "Khách hàng"),
-                FPMapMarker(it.fromAddress.lat!!, it.fromAddress.long!!, R.drawable.ic_merchant_marker, null)
+                FPMapMarker(it.toAddress.lat!!, it.toAddress.lng!!, R.drawable.ic_customer_marker, "Khách hàng"),
+                FPMapMarker(it.fromAddress.lat!!, it.fromAddress.lng!!, R.drawable.ic_merchant_marker, null)
             )
         }
     }

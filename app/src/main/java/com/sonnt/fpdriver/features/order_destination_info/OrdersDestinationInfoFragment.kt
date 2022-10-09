@@ -4,11 +4,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.viewModels
 import com.sonnt.fpdriver.R
 import com.sonnt.fpdriver.databinding.FragmentOrdersDestinationInfoBinding
 import com.sonnt.fpdriver.features._base.BaseMapFragment
-import com.sonnt.fpdriver.model.Address
 import com.sonnt.fpdriver.model.FPMapMarker
 
 
@@ -31,7 +29,7 @@ abstract class OrdersDestinationInfoFragment : BaseMapFragment<FragmentOrdersDes
 
     fun startMapIntent() {
         val destinationLatitude = viewModel.toAddress.lat
-        val destinationLongitude = viewModel.toAddress.long
+        val destinationLongitude = viewModel.toAddress.lng
 
         val gmmIntentUri = Uri.parse("google.navigation:q=$destinationLatitude,$destinationLongitude&mode=l")
         val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)

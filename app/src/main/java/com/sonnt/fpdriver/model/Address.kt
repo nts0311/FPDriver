@@ -8,7 +8,7 @@ var district: String? = null,
 var city: String? = null,
 var detail: String? = null,
 var lat: Double? = null,
-var long: Double? = null
+var lng: Double? = null
 ) {
     override fun toString(): String {
         var result = ""
