@@ -1,4 +1,4 @@
-package com.sonnt.fpdriver.features.orders_step3
+package com.sonnt.fpdriver.features.orders_step6
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,12 +9,12 @@ import com.sonnt.fpdriver.features.order_detail.OrderDetailViewModel
 import com.sonnt.fpdriver.model.OrderInfo
 import com.sonnt.fpdriver.utils.formatCurrency
 
-class OrderStep3ViewModel: OrderDetailViewModel() {
+class OrderStep6ViewModel: OrderDetailViewModel() {
 
     override val hideMerchantName: Boolean
-        get() = false
+        get() = true
     override val price: LiveData<String> = orderInfo.map {
-        it.paymentInfo.price.formatCurrency()
+        it.paymentInfo.calculatePrice().formatCurrency()
     }
 
 

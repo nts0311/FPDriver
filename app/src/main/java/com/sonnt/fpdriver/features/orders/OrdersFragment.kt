@@ -34,6 +34,7 @@ class OrdersFragment : BaseMapFragment<FragmentOrdersBinding>() {
         setActionBarTitle("Đơn hàng mới")
 
         binding.acceptButton.setOnClickListener {
+            viewModel.clearOrder()
             findNavController().navigate(R.id.orders_next_action)
         }
     }

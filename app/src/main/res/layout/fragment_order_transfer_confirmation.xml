@@ -12,7 +12,11 @@
 
         <variable
             name="viewModel"
-            type="com.sonnt.fpdriver.features.orders_step4.OrdersStep4ViewModel" />
+            type="com.sonnt.fpdriver.features.order_transfer_confirmation.OrdersTransferConfirmationViewModel" />
+
+        <variable
+            name="fragment"
+            type="com.sonnt.fpdriver.features.order_transfer_confirmation.OrdersTransferConfirmationFragment" />
     </data>
 
     <FrameLayout
@@ -39,10 +43,13 @@
 
                     <TextView
                         android:id="@+id/textView28"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Chụp hình hoá đơn"
+                        android:layout_marginEnd="16dp"
+                        android:text="@{fragment.guideLabel}"
+                        app:layout_constraintEnd_toStartOf="@+id/add_image_button"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="@+id/textView25"
                         app:layout_constraintTop_toBottomOf="@+id/textView27" />
 
@@ -52,7 +59,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="16dp"
-                        android:text="Hoá đơn"
+                        android:text="@{fragment.imageLabel}"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
@@ -88,7 +95,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="@{NumberFormatterKt.formatCurrency(viewModel.orderInfo.paymentInfo.price)}"
+                        android:text="@{viewModel.price}"
                         android:textColor="@color/black"
                         android:textSize="20sp"
                         android:textStyle="bold"
@@ -100,7 +107,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="Trả tiền nhà hàng"
+                        android:text="@{fragment.transactionLabel}"
                         app:layout_constraintStart_toStartOf="@+id/textView25"
                         app:layout_constraintTop_toBottomOf="@+id/textView25" />
 
@@ -150,7 +157,8 @@
                 android:layout_height="55dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:text="Xác nhận lấy món"
+                android:text="@{fragment.buttonTitle}"
+                android:onClick="@{() -> fragment.onConfirmButtonClicked()}"
                 android:enabled="@{viewModel.isBillImageUploaded()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

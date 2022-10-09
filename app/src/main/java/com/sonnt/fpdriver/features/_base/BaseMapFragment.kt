@@ -43,6 +43,8 @@ abstract class BaseMapFragment<T: ViewDataBinding>: BaseFragment<T>() {
     }
 
     fun submitListMarker(markers: List<FPMapMarker>) {
+        if (markers.isEmpty()) return
+
         val maxLat = markers.maxOf { it.lat }
         val maxLong = markers.maxOf { it.long }
         val minLat = markers.minOf { it.lat }

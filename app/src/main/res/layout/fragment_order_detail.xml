@@ -10,7 +10,11 @@
 
         <variable
             name="viewModel"
-            type="com.sonnt.fpdriver.features.orders_step3.OrderStep3ViewModel" />
+            type="com.sonnt.fpdriver.features.order_detail.OrderDetailViewModel" />
+
+        <variable
+            name="fragment"
+            type="com.sonnt.fpdriver.features.order_detail.OrderDetailFragment" />
     </data>
 
     <FrameLayout
@@ -70,7 +74,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@{NumberFormatterKt.formatCurrency(viewModel.orderInfo.paymentInfo.price)}"
+                        android:text="@{viewModel.price}"
                         android:textAlignment="viewEnd"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -87,6 +91,7 @@
                     app:layout_constraintBottom_toBottomOf="@+id/textView19"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/textView19"
+                    android:onClick="@{() -> fragment.call()}"
                     app:tint="@color/purple_700" />
 
                 <TextView
@@ -113,6 +118,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_weight="1"
+                    android:visibility="@{viewModel.hideMerchantName ? View.GONE : View.VISIBLE}"
                     android:text="@{viewModel.orderInfo.merchantName}"
                     android:textColor="@color/black"
                     android:textSize="20sp"
@@ -125,9 +131,10 @@
                     android:id="@+id/textView18"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:text="Khách hàng"
-                    app:layout_constraintStart_toStartOf="@+id/textView16"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
                 <TextView
@@ -167,7 +174,8 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="24dp"
                     android:layout_marginEnd="16dp"
-                    android:text="Nhận món"
+                    android:text="@{fragment.buttonTitle}"
+                    android:onClick="@{() -> fragment.buttonConfirmClicked()}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"

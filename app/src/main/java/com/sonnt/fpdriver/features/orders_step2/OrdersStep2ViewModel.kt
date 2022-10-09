@@ -1,25 +1,24 @@
 package com.sonnt.fpdriver.features.orders_step2
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.map
 import com.sonnt.fpdriver.data.repos.OrderRepository
-import com.sonnt.fpdriver.features._base.BaseViewModel
+import com.sonnt.fpdriver.features.order_destination_info.OrdersDestinationInfoViewModel
+import com.sonnt.fpdriver.model.Address
 import com.sonnt.fpdriver.model.OrderInfo
 import com.sonnt.fpdriver.utils.formatCurrency
 
-class OrdersStep2ViewModel: BaseViewModel() {
-    var orderInfo = MutableLiveData<OrderInfo>()
-    var description = orderInfo.map { order ->
-        return@map """
-            Mã đơn hàng: ${order.orderId}
-            Phí ship: ${order.paymentInfo.deliveryFee.formatCurrency()}
-            Thu khách: ${order.paymentInfo.calculatePrice().formatCurrency()}
-        """.trimIndent()
-    }
+class OrdersStep2ViewModel : OrdersDestinationInfoViewModel() {
+    override val orderInfo: OrderInfo?
+        get() = OrderRepository.shared.latestOrder
+    override val toAddress: Address
+        get() = orderInfo?.fromAddress ?: Address()
+    override val phone: String
+        get() = orderInfo?.merchantPhone ?: ""
+    override val name: String
+        get() = orderInfo?.merchantName ?: ""
 
-    init {
-        getCurrentOrder()?.let { orderInfo.value = it }
-    }
-
-    fun getCurrentOrder(): OrderInfo? = OrderRepository.shared.latestOrder
+    override var guide = """
+        Mã đơn hàng: ${orderInfo?.orderId}
+        Phí ship: ${orderInfo?.paymentInfo?.deliveryFee?.formatCurrency()}
+        Thu khách: ${orderInfo?.paymentInfo?.calculatePrice()?.formatCurrency()}
+    """.trimIndent()
 }

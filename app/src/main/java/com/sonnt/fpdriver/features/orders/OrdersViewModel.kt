@@ -40,4 +40,8 @@ class OrdersViewModel: BaseViewModel() {
         }.start()
     }
 
+    fun clearOrder() {
+        hasOrder.value = false
+    }
+
 }

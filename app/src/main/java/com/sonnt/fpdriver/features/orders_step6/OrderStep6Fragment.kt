@@ -1,4 +1,4 @@
-package com.sonnt.fpdriver.features.orders_step3
+package com.sonnt.fpdriver.features.orders_step6
 
 import android.os.Bundle
 import android.view.View
@@ -13,11 +13,11 @@ import com.sonnt.fpdriver.features.order_detail.OrderDetailFragment
 import com.sonnt.fpdriver.model.OrderedProductItem
 
 
-class OrderStep3Fragment : OrderDetailFragment() {
+class OrderStep6Fragment : OrderDetailFragment() {
 
-    override val viewModel: OrderStep3ViewModel by viewModels()
+    override val viewModel: OrderStep6ViewModel by viewModels()
     override val buttonTitle: String
-        get() = "Nhận món"
+        get() = "Giao hàng"
 
     override fun buttonConfirmClicked() {
         findNavController().navigate(R.id.orders_next_action)
@@ -25,11 +25,11 @@ class OrderStep3Fragment : OrderDetailFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setActionBarTitle("Nhận món")
+        setActionBarTitle("Giao hàng")
     }
 
     companion object {
         @JvmStatic
-        fun newInstance() = OrderStep3Fragment()
+        fun newInstance() = OrderStep6Fragment()
     }
 }

@@ -1,4 +1,4 @@
-package com.sonnt.fpdriver.features.orders_step4
+package com.sonnt.fpdriver.features.orders_step7
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
@@ -15,7 +15,7 @@ import com.sonnt.fpdriver.model.OrderInfo
 import com.sonnt.fpdriver.utils.formatCurrency
 import java.lang.Exception
 
-class OrdersStep4ViewModel: OrdersTransferConfirmationViewModel() {
+class OrdersStep7ViewModel: OrdersTransferConfirmationViewModel() {
     override val price: LiveData<String>
-        get() = orderInfo.map { it.paymentInfo.price.formatCurrency() }
+        get() = orderInfo.map { it.paymentInfo.calculatePrice().formatCurrency() }
 }

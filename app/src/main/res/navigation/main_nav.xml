@@ -21,7 +21,7 @@
         android:id="@+id/ordersStep2Fragment"
         android:name="com.sonnt.fpdriver.features.orders_step2.OrdersStep2Fragment"
         android:label="fragment_orders_step2"
-        tools:layout="@layout/fragment_orders_step2" >
+        tools:layout="@layout/fragment_orders_destination_info" >
         <action
             android:id="@+id/orders_next_action"
             app:destination="@id/orderStep3Fragment" />
@@ -47,5 +47,33 @@
     <fragment
         android:id="@+id/ordersStep4Fragment"
         android:name="com.sonnt.fpdriver.features.orders_step4.OrdersStep4Fragment"
-        android:label="OrdersStep4Fragment" />
+        android:label="OrdersStep4Fragment" >
+        <action
+            android:id="@+id/orders_next_action"
+            app:destination="@id/ordersStep5Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ordersStep5Fragment"
+        android:name="com.sonnt.fpdriver.features.orders_step5.OrdersStep5Fragment"
+        android:label="OrdersStep5Fragment" >
+        <action
+            android:id="@+id/orders_next_action"
+            app:destination="@id/orderStep6Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderStep6Fragment"
+        android:name="com.sonnt.fpdriver.features.orders_step6.OrderStep6Fragment"
+        android:label="OrderStep6Fragment" >
+        <action
+            android:id="@+id/orders_next_action"
+            app:destination="@id/ordersStep7Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ordersStep7Fragment"
+        android:name="com.sonnt.fpdriver.features.orders_step7.OrdersStep7Fragment"
+        android:label="OrdersStep7Fragment" >
+        <action
+            android:id="@+id/orders_next_action"
+            app:destination="@id/ordersFragment" />
+    </fragment>
 </navigation>

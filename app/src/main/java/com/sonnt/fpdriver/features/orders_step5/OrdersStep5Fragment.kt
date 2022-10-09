@@ -1,4 +1,4 @@
-package com.sonnt.fpdriver.features.orders_step2
+package com.sonnt.fpdriver.features.orders_step5
 
 import android.content.Intent
 import android.net.Uri
@@ -12,22 +12,24 @@ import com.sonnt.fpdriver.features.order_destination_info.OrdersDestinationInfoF
 import com.sonnt.fpdriver.model.Address
 import com.sonnt.fpdriver.model.FPMapMarker
 
-class OrdersStep2Fragment : OrdersDestinationInfoFragment() {
+class OrdersStep5Fragment : OrdersDestinationInfoFragment() {
 
-    override val viewModel: OrdersStep2ViewModel by viewModels()
+    override val viewModel: OrdersStep5ViewModel by viewModels()
 
-    override val detailText: String = "Chi tiết nhà hàng"
+    override val detailText: String
+        get() = "Chi tiết khách hàng"
+    override val confirmButtonTitle: String
+        get() = "Đã đến vị trí giao hàng"
 
     override val listMarker: List<FPMapMarker>
         get() = getListMarkers()
 
-    override val confirmButtonTitle: String
-        get() = "Đã đến nhà hàng"
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setActionBarTitle("Đi đến nhà hàng")
-        binding.viewModel = viewModel
+        setActionBarTitle("Đi đến vị trí giao hàng")
+        binding.confirmButtom.setOnClickListener {
+            findNavController().navigate(R.id.orders_next_action)
+        }
     }
 
     override fun buttonConfirmClicked() {

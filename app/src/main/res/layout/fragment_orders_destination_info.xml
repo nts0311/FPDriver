@@ -9,7 +9,11 @@
         <import type="com.sonnt.fpdriver.utils.NumberFormatterKt" />
         <variable
             name="viewModel"
-            type="com.sonnt.fpdriver.features.orders_step2.OrdersStep2ViewModel" />
+            type="com.sonnt.fpdriver.features.order_destination_info.OrdersDestinationInfoViewModel" />
+
+        <variable
+            name="fragment"
+            type="com.sonnt.fpdriver.features.order_destination_info.OrdersDestinationInfoFragment" />
     </data>
 
     <FrameLayout
@@ -42,18 +46,7 @@
                         android:background="#F4F4F4"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView15" />
-
-                    <View
-                        android:id="@+id/view3"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="8dp"
-                        android:background="#F4F4F4"
-                        app:layout_constraintBottom_toTopOf="@+id/confirmButtom"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout6" />
 
                     <TextView
                         android:id="@+id/textView6"
@@ -61,9 +54,47 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="16dp"
-                        android:text="Chi tiết nhà hàng"
+                        android:text="@{fragment.detailText}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical"
+                        android:visibility="@{viewModel.guide != null ? View.VISIBLE : View.GONE}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+                        <View
+                            android:id="@+id/view3"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="8dp"
+                            android:background="#F4F4F4"/>
+
+                        <TextView
+                            android:id="@+id/textView14"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="8dp"
+                            android:text="Hướng dẫn nhận món" />
+
+                        <TextView
+                            android:id="@+id/textView15"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="16dp"
+                            android:text="@{viewModel.guide}"
+                            android:textColor="@color/black" />
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/linearLayout"
@@ -83,7 +114,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
                             android:layout_weight="1"
-                            android:text="@{viewModel.orderInfo.merchantName}"
+                            android:text="@{viewModel.name}"
                             android:textColor="@color/black"
                             android:textSize="20sp"
                             android:textStyle="bold" />
@@ -95,6 +126,7 @@
                             android:layout_marginEnd="16dp"
                             android:background="@null"
                             android:src="@drawable/ic_map_24"
+                            android:onClick="@{() -> fragment.startMapIntent()}"
                             app:tint="@color/purple_700" />
 
                         <ImageButton
@@ -103,6 +135,7 @@
                             android:layout_height="wrap_content"
                             android:background="@null"
                             android:src="@drawable/ic_call_24"
+                            android:onClick="@{() -> fragment.call()}"
                             app:tint="@color/purple_700" />
                     </LinearLayout>
 
@@ -131,39 +164,16 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@{viewModel.orderInfo.fromAddress.toString()}"
+                            android:text="@{viewModel.toAddress.toString()}"
                             android:textColor="@color/black" />
                     </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/textView14"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:text="Hướng dẫn nhận món"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/view3" />
-
-                    <TextView
-                        android:id="@+id/textView15"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
-                        android:text="@{viewModel.description}"
-                        android:textColor="@color/black"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardView"
                         android:layout_width="match_parent"
                         android:layout_height="350dp"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="16dp"
                         android:minHeight="300dp"
@@ -200,7 +210,8 @@
                 android:layout_height="55dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:text="Đã đến nhà hàng"
+                android:text="@{fragment.confirmButtonTitle}"
+                android:onClick="@{() -> fragment.buttonConfirmClicked()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
