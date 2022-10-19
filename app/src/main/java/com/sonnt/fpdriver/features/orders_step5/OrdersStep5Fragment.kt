@@ -23,13 +23,17 @@ class OrdersStep5Fragment : OrdersDestinationInfoFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setActionBarTitle("Đi đến vị trí giao hàng")
-        binding.confirmButtom.setOnClickListener {
-            findNavController().navigate(R.id.orders_next_action)
-        }
+        setupViewModel()
     }
 
     override fun buttonConfirmClicked() {
-        findNavController().navigate(R.id.orders_next_action)
+        viewModel.arrivedAtCustomer()
+    }
+
+    fun setupViewModel() {
+        viewModel.onApiSuccess.observe(viewLifecycleOwner) {
+            findNavController().navigate(R.id.orders_next_action)
+        }
     }
 
     private fun getListMarkers(): List<FPMapMarker> {

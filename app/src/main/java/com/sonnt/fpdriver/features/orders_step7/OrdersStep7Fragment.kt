@@ -19,12 +19,18 @@ class OrdersStep7Fragment : OrdersTransferConfirmationFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setActionBarTitle("Xác nhận giao hàng")
+        setupViewModel()
     }
 
     override fun onConfirmButtonClicked() {
-        OrderRepository.shared.latestOrder = null
-        //findNavController().navigate(R.id.orders_next_action)
-        findNavController().popBackStack(R.id.ordersFragment, false)
+        viewModel.confirmDeliveredOrderToCustomer()
+    }
+
+    fun setupViewModel() {
+        viewModel.onApiSuccess.observe(viewLifecycleOwner) {
+            OrderRepository.shared.latestOrder = null
+            findNavController().popBackStack(R.id.ordersFragment, false)
+        }
     }
 
     companion object {

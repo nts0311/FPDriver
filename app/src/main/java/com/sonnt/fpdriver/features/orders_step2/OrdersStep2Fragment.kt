@@ -25,10 +25,17 @@ class OrdersStep2Fragment : OrdersDestinationInfoFragment() {
         super.onViewCreated(view, savedInstanceState)
         setActionBarTitle("Đi đến nhà hàng")
         binding.viewModel = viewModel
+        setupViewModel()
     }
 
     override fun buttonConfirmClicked() {
-        findNavController().navigate(R.id.orders_next_action)
+        viewModel.arrivedAtMerchant()
+    }
+
+    fun setupViewModel() {
+        viewModel.onApiSuccess.observe(viewLifecycleOwner) {
+            findNavController().navigate(R.id.orders_next_action)
+        }
     }
 
     private fun getListMarkers(): List<FPMapMarker> {

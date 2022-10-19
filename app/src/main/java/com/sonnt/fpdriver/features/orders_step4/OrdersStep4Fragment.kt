@@ -18,10 +18,17 @@ class OrdersStep4Fragment : OrdersTransferConfirmationFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setActionBarTitle("Nhận món")
+        setupViewModel()
     }
 
     override fun onConfirmButtonClicked() {
-        findNavController().navigate(R.id.orders_next_action)
+        viewModel.confirmReceivedOrderFromMerchant()
+    }
+
+    fun setupViewModel() {
+        viewModel.onApiSuccess.observe(viewLifecycleOwner) {
+            findNavController().navigate(R.id.orders_next_action)
+        }
     }
 
     companion object {

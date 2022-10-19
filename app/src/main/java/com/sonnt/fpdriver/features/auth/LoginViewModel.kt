@@ -1,5 +1,6 @@
 package com.sonnt.fpdriver.features.auth
 
+import android.util.Base64
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.sonnt.fpdriver.data.local.AuthDataSource

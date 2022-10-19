@@ -304,6 +304,7 @@
                     android:id="@+id/accept_button"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
+                    android:onClick="@{() -> viewModel.confirmReceiveOrder()}"
                     android:text="@{viewModel.submitButtonText}" />
             </LinearLayout>
 

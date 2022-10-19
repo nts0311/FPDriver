@@ -27,11 +27,6 @@ class OrdersFragment : BaseMapFragment<FragmentOrdersBinding>() {
 
     private fun setupView() {
         setActionBarTitle("Đơn hàng mới")
-
-        binding.acceptButton.setOnClickListener {
-            viewModel.clearOrder()
-            findNavController().navigate(R.id.orders_next_action)
-        }
     }
 
     private fun setupData() {
@@ -46,6 +41,12 @@ class OrdersFragment : BaseMapFragment<FragmentOrdersBinding>() {
                 FPMapMarker(it.fromAddress.lat!!, it.fromAddress.lng!!, R.drawable.ic_merchant_marker, null)
             )
         }
+
+        viewModel.onAcceptOrderSuccess.observe(viewLifecycleOwner) {
+            viewModel.clearOrder()
+            findNavController().navigate(R.id.orders_next_action)
+        }
+
     }
 
     override fun mapLoadDone() {

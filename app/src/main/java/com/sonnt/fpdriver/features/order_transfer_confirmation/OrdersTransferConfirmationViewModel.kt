@@ -20,7 +20,7 @@ abstract class OrdersTransferConfirmationViewModel: BaseViewModel(), UploadCallb
     var isUploadingImage = MutableLiveData(false)
     var isBillImageUploaded = MutableLiveData(false)
 
-    var billImageUrl = ""
+    var imageUrl = ""
 
     init {
         getCurrentOrder()?.let { orderInfo.value = it }
@@ -51,7 +51,7 @@ abstract class OrdersTransferConfirmationViewModel: BaseViewModel(), UploadCallb
     }
 
     override fun onSuccess(requestId: String?, resultData: MutableMap<Any?, Any?>?) {
-        billImageUrl = resultData?.get("url") as? String ?: ""
+        imageUrl = resultData?.get("url") as? String ?: ""
         isUploadingImage.value = false
         isBillImageUploaded.value = true
     }
