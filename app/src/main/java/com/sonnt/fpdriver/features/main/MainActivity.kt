@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
@@ -15,6 +16,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sonnt.fpdriver.R
+import com.sonnt.fpdriver.data.repos.OrderRepository
 import com.sonnt.fpdriver.features._base.BaseActivity
 
 class MainActivity: BaseActivity() {
@@ -33,6 +35,8 @@ class MainActivity: BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setupViews()
+        bindViewModel()
+        viewModel.getActiveOrder()
     }
 
     private fun setupViews() {
@@ -47,6 +51,13 @@ class MainActivity: BaseActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
 
         setupBottomNav()
+    }
+
+    private fun bindViewModel() {
+        viewModel.screenDestination.observe(this) {destination ->
+            if (destination == -1) return@observe
+            navController.navigate(destination)
+        }
     }
 
     override fun onBackPressed() {
@@ -87,5 +98,4 @@ class MainActivity: BaseActivity() {
     private fun onNavDestinationChanged(navController: NavController, destination: NavDestination, args: Bundle?) {
 
     }
-
 }

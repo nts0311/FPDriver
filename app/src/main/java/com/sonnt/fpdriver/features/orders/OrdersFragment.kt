@@ -1,6 +1,8 @@
 package com.sonnt.fpdriver.features.orders
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -43,8 +45,11 @@ class OrdersFragment : BaseMapFragment<FragmentOrdersBinding>() {
         }
 
         viewModel.onAcceptOrderSuccess.observe(viewLifecycleOwner) {
+            binding.rootLayout.visibility = View.GONE
             viewModel.clearOrder()
-            findNavController().navigate(R.id.orders_next_action)
+            Handler(Looper.getMainLooper()).post {
+                findNavController().navigate(R.id.orders_next_action)
+            }
         }
 
     }

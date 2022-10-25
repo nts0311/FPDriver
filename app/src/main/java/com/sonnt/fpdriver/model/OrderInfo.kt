@@ -32,6 +32,16 @@ data class OrderPaymentInfo(
     }
 }
 
+enum class OrderStatus(val value: String) {
+    INIT("INIT"),
+    SEARCHING_DRIVER("SEARCHING_DRIVER"),
+    PREPARING("PREPARING"),
+    PICKING_UP("PICKING_UP"),
+    DELIVERING("DELIVERING"),
+    SUCCEED("SUCCEED"),
+    CANCELED("CANCELED")
+}
+
 data class OrderInfo(
     val orderId: Long,
     val orderStatus: String,
@@ -45,4 +55,8 @@ data class OrderInfo(
     val customerPhone: String,
     val merchantName: String,
     val merchantPhone: String
-)
+) {
+    fun getOrderStatus(): OrderStatus {
+        return OrderStatus.valueOf(orderStatus)
+    }
+}

@@ -1,5 +1,6 @@
 package com.sonnt.fpdriver.network.service
 
+import com.sonnt.fpdriver.features.main.GetActiveOrderResponse
 import com.sonnt.fpdriver.features.orders.AcceptOrderRequest
 import com.sonnt.fpdriver.features.orders_step2.ArrivedAtMerchantRequest
 import com.sonnt.fpdriver.features.orders_step4.ConfirmReceiveOrderRequest
@@ -10,9 +11,13 @@ import com.sonnt.fpdriver.network.dto.response.AuthenticationResponse
 import com.sonnt.fpdriver.network.dto.response.BaseResponse
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface OrderService {
+    @GET("/driver/order/get-active-order")
+    suspend fun getActiveOrder(): Response<GetActiveOrderResponse>
+
     @POST("driver/order/accept-order")
     suspend fun acceptOrder(@Body body: AcceptOrderRequest): Response<BaseResponse>
 

@@ -5,7 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="android.view.View" />
+
         <import type="com.sonnt.fpdriver.utils.NumberFormatterKt" />
 
         <variable
@@ -87,11 +89,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:background="@null"
+                    android:onClick="@{() -> fragment.call()}"
                     android:src="@drawable/ic_call_24"
                     app:layout_constraintBottom_toBottomOf="@+id/textView19"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/textView19"
-                    android:onClick="@{() -> fragment.call()}"
                     app:tint="@color/purple_700" />
 
                 <TextView
@@ -118,11 +120,11 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_weight="1"
-                    android:visibility="@{viewModel.hideMerchantName ? View.GONE : View.VISIBLE}"
                     android:text="@{viewModel.orderInfo.merchantName}"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold"
+                    android:visibility="@{viewModel.hideMerchantName ? View.GONE : View.VISIBLE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -174,8 +176,8 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="24dp"
                     android:layout_marginEnd="16dp"
-                    android:text="@{fragment.buttonTitle}"
                     android:onClick="@{() -> fragment.buttonConfirmClicked()}"
+                    android:text="@{fragment.buttonTitle}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
