@@ -58,6 +58,11 @@ class MainActivity: BaseActivity() {
             if (destination == -1) return@observe
             navController.navigate(destination)
         }
+
+        viewModel.orderCanceled?.observe(this) {reason ->
+            createDialog(content = "Đơn hàng đã bị huỷ. Lý do: $reason")
+            navController.navigate(R.id.ordersFragment)
+        }
     }
 
     override fun onBackPressed() {

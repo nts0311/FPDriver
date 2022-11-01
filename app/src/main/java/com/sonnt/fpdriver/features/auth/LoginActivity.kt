@@ -9,9 +9,12 @@ import android.view.View
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import com.sonnt.fpdriver.FpDriverApplication
 import com.sonnt.fpdriver.R
 import com.sonnt.fpdriver.databinding.ActivityLoginBinding
 import com.sonnt.fpdriver.features.main.MainActivity
+import com.sonnt.fpdriver.message.LoggedInEvent
+import org.greenrobot.eventbus.EventBus
 
 class LoginActivity : AppCompatActivity() {
 
@@ -38,10 +41,14 @@ class LoginActivity : AppCompatActivity() {
             if (!isLoggedIn)
                 return@observe
 
+            var isSessionExpired = true
             if (isFromSplash) {
+                isSessionExpired = false
                 val intent = Intent(this@LoginActivity, MainActivity::class.java)
                 startActivity(intent)
             }
+
+            EventBus.getDefault().post(LoggedInEvent(isSessionExpired))
 
             finish()
         }

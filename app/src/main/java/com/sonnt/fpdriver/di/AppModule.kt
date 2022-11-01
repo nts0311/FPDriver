@@ -10,7 +10,7 @@ object AppModule {
 
     private val gson by lazy { Gson() }
 
-    private val stompMessageHub by lazy { StompMessageHub() }
+    private val stompMessageHub = StompMessageHub()
 
     fun provideStompMessageHub() = stompMessageHub
 

@@ -4,14 +4,15 @@ import android.annotation.SuppressLint
 import android.util.Log
 import com.sonnt.fpdriver.data.local.AuthDataSource
 import com.sonnt.fpdriver.di.AppModule
+import com.sonnt.fpdriver.message.LoggedInEvent
+import com.sonnt.fpdriver.message.WSConnectedEvent
 import com.sonnt.fpdriver.network.Endpoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.reactive.asFlow
-import okhttp3.MediaType
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import ua.naiksoftware.stomp.Stomp
 import ua.naiksoftware.stomp.StompClient
 import ua.naiksoftware.stomp.dto.LifecycleEvent
@@ -20,37 +21,52 @@ import ua.naiksoftware.stomp.dto.StompHeader
 import ua.naiksoftware.stomp.dto.StompMessage
 
 class StompMessageHub {
-    private lateinit var stompClient: StompClient
+    private val stompClient: StompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, Endpoint.WS_BASE_URL)
     private val gson = AppModule.provideGson()
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
     private val subscriberFlows = mutableMapOf<String, SharedFlow<*>>()
 
     init {
-        connectWS()
+        EventBus.getDefault().register(this)
     }
 
-    private fun connectWS(onConnected: () -> Unit = {}) {
-        try {
-            stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, Endpoint.WS_BASE_URL)
-            stompClient.connect(listOf(StompHeader("Authorization", "Bearer ${AuthDataSource.authToken}")))
+    @Subscribe
+    fun onLoggedIn(event: LoggedInEvent) {
+        if (event.isSessionExpired) {
+            reconnect()
+        } else {
+            connectWS()
+        }
+    }
 
+    private fun connectWS() {
+        try {
+            stompClient.lifecycle().asFlow()
+                .filter { it.type == LifecycleEvent.Type.OPENED }
+                .take(1)
+                .onEach {
+                    EventBus.getDefault().post(WSConnectedEvent())
+                }
+                .launchIn(coroutineScope)
+            stompClient.connect(getConnectionHeaders())
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
+    private fun getConnectionHeaders() = listOf(StompHeader("Authorization", "Bearer ${AuthDataSource.authToken}"))
+
     @SuppressLint("CheckResult")
     fun <T> subscribeTo(destination: String, clazz: Class<T>): SharedFlow<T>? {
-
-//        if (!stompClient.isConnected) {
-//            return null
-//        }
-
         if (subscriberFlows[destination] == null) {
             subscriberFlows[destination] = stompClient.topic(destination).asFlow().map { topicMessage ->
                 val jsonStr = topicMessage.payload
 
                 val wsMessage = gson.fromJson(jsonStr, WSMessage::class.java)
+
+                if (clazz == WSMessage::class.java) {
+                    return@map wsMessage
+                }
 
                 if (clazz == String::class.java) {
                     return@map wsMessage.body
@@ -74,5 +90,14 @@ class StompMessageHub {
         val message = StompMessage(StompCommand.SEND, headers, payload)
         return stompClient.send(message).toFlowable<Any>().asFlow()
     }
+
+    @SuppressLint("CheckResult")
+    fun reconnect() {
+//        stompClient.disconnectCompletable()
+//            .subscribe {
+//                stompClient.connect(getConnectionHeaders())
+//            }
+    }
+
 }
 

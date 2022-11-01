@@ -16,18 +16,19 @@ import com.sonnt.fpdriver.network.dto.request.AuthRequest
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.Subscribe
 
 class OrdersViewModel: BaseViewModel() {
     val limitTimeAcceptOrder = 60000L
     val interval = 1000L
 
-    private val newOrderRequestFlow = OrderRepository.shared.newOrderRequestFlow
-        ?.onEach {
-            hasOrder.value = true
-            startTimer()
-        }
+//    private val newOrderRequestFlow = OrderRepository.shared.newOrderRequestFlow
+//        ?.onEach {
+//            hasOrder.value = true
+//            startTimer()
+//        }
 
-    val orderInfo = newOrderRequestFlow?.asLiveData()
+    val orderInfo = MutableLiveData<OrderInfo>() //newOrderRequestFlow?.asLiveData()
     val hasOrder = MutableLiveData(false)
     val submitButtonText = MutableLiveData("Chấp nhận")
 
@@ -66,6 +67,16 @@ class OrdersViewModel: BaseViewModel() {
                 is ApiResult.Failed -> error("Xác nhận yêu cầu thất bại!")
             }
         }
+    }
+
+    @Subscribe
+    fun onWSConnected() {
+        OrderRepository.shared.getNewOrderRequestFlow()
+            .onEach {
+                hasOrder.value = true
+                orderInfo.value = it
+                startTimer()
+                }.launchIn(viewModelScope)
     }
 
 }

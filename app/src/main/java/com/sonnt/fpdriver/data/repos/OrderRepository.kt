@@ -6,6 +6,7 @@ import com.sonnt.fpdriver.network.ApiResult
 import com.sonnt.fpdriver.network.Endpoint
 import com.sonnt.fpdriver.network.NetworkModule
 import com.sonnt.fpdriver.network.callApi
+import com.sonnt.fpdriver.network.stomp.WSMessage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -18,11 +19,21 @@ class OrderRepository private constructor(){
 
     var latestOrder: OrderInfo? = null
 
-    val newOrderRequestFlow: Flow<OrderInfo>? =
-        stompMessageHub.subscribeTo(Endpoint.newOrderRequest, OrderInfo::class.java)
-            ?.onEach {
-                latestOrder = it
-            }
+    private var newOrderRequestFlow: Flow<OrderInfo>? = null
+
+    fun getNewOrderRequestFlow(): Flow<OrderInfo> {
+        if (newOrderRequestFlow == null) {
+            newOrderRequestFlow = stompMessageHub.subscribeTo(Endpoint.newOrderRequest, OrderInfo::class.java)
+                ?.onEach {
+                    latestOrder = it
+                }
+        }
+
+        return newOrderRequestFlow!!
+    }
+
+    val orderStatusFlow: Flow<WSMessage>? =
+        stompMessageHub.subscribeTo(Endpoint.orderStatus, WSMessage::class.java)
 
     suspend fun getActiveOrder(): OrderInfo? {
         val response = callApi {
