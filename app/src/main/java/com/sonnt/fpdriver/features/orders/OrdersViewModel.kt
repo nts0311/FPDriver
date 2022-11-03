@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.sonnt.fpdriver.data.repos.OrderRepository
 import com.sonnt.fpdriver.di.AppModule
 import com.sonnt.fpdriver.features._base.BaseViewModel
+import com.sonnt.fpdriver.message.WSConnectedEvent
 import com.sonnt.fpdriver.model.OrderInfo
 import com.sonnt.fpdriver.network.ApiResult
 import com.sonnt.fpdriver.network.NetworkModule
@@ -16,6 +17,7 @@ import com.sonnt.fpdriver.network.dto.request.AuthRequest
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 
 class OrdersViewModel: BaseViewModel() {
@@ -33,6 +35,10 @@ class OrdersViewModel: BaseViewModel() {
     val submitButtonText = MutableLiveData("Chấp nhận")
 
     val onAcceptOrderSuccess = MutableLiveData<Boolean>()
+
+    init {
+        EventBus.getDefault().register(this)
+    }
 
     private fun startTimer() {
         object : CountDownTimer(limitTimeAcceptOrder, interval) {
@@ -70,7 +76,7 @@ class OrdersViewModel: BaseViewModel() {
     }
 
     @Subscribe
-    fun onWSConnected() {
+    fun onWSConnected(event: WSConnectedEvent) {
         OrderRepository.shared.getNewOrderRequestFlow()
             .onEach {
                 hasOrder.value = true

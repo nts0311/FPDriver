@@ -6,22 +6,24 @@ import androidx.lifecycle.viewModelScope
 import com.sonnt.fpdriver.R
 import com.sonnt.fpdriver.base.BaseViewModel
 import com.sonnt.fpdriver.data.repos.OrderRepository
+import com.sonnt.fpdriver.message.WSConnectedEvent
 import com.sonnt.fpdriver.model.OrderStatus
 import com.sonnt.fpdriver.network.Endpoint
 import com.sonnt.fpdriver.network.stomp.WSMessage
 import com.sonnt.fpdriver.network.stomp.WSMessageCode
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 
 class MainActivityViewModel: BaseViewModel() {
 
     val screenDestination = MutableLiveData<Int>()
-    val orderCanceled = OrderRepository.shared.orderStatusFlow
-        ?.filter { it.code == WSMessageCode.CANCEL_ORDER.code }
-        ?.map { it.getBody(CanceledOrderMessage::class.java)?.reason ?: "" }
-        ?.asLiveData()
+    val orderCanceled = MutableLiveData<String>()
+
+    init {
+        EventBus.getDefault().register(this)
+    }
 
     fun getActiveOrder() {
         viewModelScope.launch {
@@ -36,6 +38,16 @@ class MainActivityViewModel: BaseViewModel() {
 
             screenDestination.value = destinationId
         }
+    }
+
+    @Subscribe
+    fun onWSConnected(event: WSConnectedEvent) {
+        OrderRepository.shared.getOrderStatusFlow()
+            .filter { it.code == WSMessageCode.CANCEL_ORDER.code }
+            .map { it.getBody(CanceledOrderMessage::class.java)?.reason ?: "" }
+            .onEach { orderCanceled.value = it }
+            .launchIn(viewModelScope)
+
     }
 
 }

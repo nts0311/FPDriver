@@ -20,6 +20,7 @@ class OrderRepository private constructor(){
     var latestOrder: OrderInfo? = null
 
     private var newOrderRequestFlow: Flow<OrderInfo>? = null
+    private var orderStatusFlow: Flow<WSMessage>? = null
 
     fun getNewOrderRequestFlow(): Flow<OrderInfo> {
         if (newOrderRequestFlow == null) {
@@ -32,8 +33,13 @@ class OrderRepository private constructor(){
         return newOrderRequestFlow!!
     }
 
-    val orderStatusFlow: Flow<WSMessage>? =
-        stompMessageHub.subscribeTo(Endpoint.orderStatus, WSMessage::class.java)
+    fun getOrderStatusFlow(): Flow<WSMessage> {
+        if (orderStatusFlow == null) {
+            orderStatusFlow = stompMessageHub.subscribeTo(Endpoint.orderStatus, WSMessage::class.java)
+        }
+
+        return orderStatusFlow!!
+    }
 
     suspend fun getActiveOrder(): OrderInfo? {
         val response = callApi {

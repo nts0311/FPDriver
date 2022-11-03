@@ -47,9 +47,9 @@ class OrdersFragment : BaseMapFragment<FragmentOrdersBinding>() {
         viewModel.onAcceptOrderSuccess.observe(viewLifecycleOwner) {
             //binding.rootLayout.visibility = View.GONE
             viewModel.clearOrder()
-            Handler(Looper.getMainLooper()).post {
+            Handler(Looper.getMainLooper()).postDelayed({
                 findNavController().navigate(R.id.orders_next_action)
-            }
+            }, 500)
         }
 
     }
