@@ -6,10 +6,6 @@
         android:icon="@drawable/ic_receipt_24"
         android:title="Đơn hàng" />
     <item
-        android:id="@+id/mapFragment"
-        android:icon="@drawable/ic_map_24"
-        android:title="Bản đồ" />
-    <item
         android:id="@+id/personalFragment"
         android:icon="@drawable/ic_personal_24"
         android:title="Cá nhân" />

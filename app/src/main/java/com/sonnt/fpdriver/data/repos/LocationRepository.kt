@@ -51,7 +51,7 @@ class LocationRepository private constructor() {
     companion object {
         val shared = LocationRepository()
 
-        private const val UPDATE_INTERVAL_SECS = 30L
+        private const val UPDATE_INTERVAL_SECS = 25L
         private const val FASTEST_UPDATE_INTERVAL_SECS = 10L
     }
 }

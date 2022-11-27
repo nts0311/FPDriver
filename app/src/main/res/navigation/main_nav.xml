@@ -12,10 +12,7 @@
         tools:layout="@layout/fragment_orders" >
         <action
             android:id="@+id/orders_next_action"
-            app:destination="@id/ordersStep2Fragment"
-            app:launchSingleTop="true"
-            app:popUpTo="@id/ordersFragment"
-            app:popUpToInclusive="false" />
+            app:destination="@id/ordersStep2Fragment" />
     </fragment>
     <fragment
         android:id="@+id/ordersStep2Fragment"
@@ -74,6 +71,7 @@
         android:label="OrdersStep7Fragment" >
         <action
             android:id="@+id/orders_next_action"
-            app:destination="@id/ordersFragment" />
+            app:destination="@id/ordersFragment"
+            app:popUpTo="@id/ordersFragment" />
     </fragment>
 </navigation>

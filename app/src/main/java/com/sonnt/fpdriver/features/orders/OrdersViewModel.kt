@@ -79,8 +79,8 @@ class OrdersViewModel: BaseViewModel() {
     fun onWSConnected(event: WSConnectedEvent) {
         OrderRepository.shared.getNewOrderRequestFlow()
             .onEach {
-                hasOrder.value = true
                 orderInfo.value = it
+                hasOrder.value = true
                 startTimer()
                 }.launchIn(viewModelScope)
     }

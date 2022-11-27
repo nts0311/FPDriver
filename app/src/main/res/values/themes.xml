@@ -43,4 +43,13 @@
         <item name="windowActionBarOverlay">true</item>
     </style>
 
+    <style name="MyShapeAppearanceOverlay" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12sp</item>
+    </style>
+
+    <style name="MyTextInputLayout" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="shapeAppearanceOverlay">@style/MyShapeAppearanceOverlay</item>
+    </style>
+
 </resources>

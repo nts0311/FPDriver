@@ -48,7 +48,7 @@ abstract class OrdersTransferConfirmationFragment : BaseFragment<FragmentOrderTr
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(requireContext(), "Task Cancelled", Toast.LENGTH_SHORT).show()
+
         }
     }
 

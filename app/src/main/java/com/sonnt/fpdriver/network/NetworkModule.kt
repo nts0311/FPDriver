@@ -11,11 +11,13 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 object NetworkModule {
     var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(Endpoint.BASE_URL)
         .client(OkHttpClient.Builder()
+            .connectTimeout(45, TimeUnit.SECONDS)
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
             })

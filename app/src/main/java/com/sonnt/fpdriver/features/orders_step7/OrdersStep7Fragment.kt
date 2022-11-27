@@ -29,7 +29,7 @@ class OrdersStep7Fragment : OrdersTransferConfirmationFragment() {
     fun setupViewModel() {
         viewModel.onApiSuccess.observe(viewLifecycleOwner) {
             OrderRepository.shared.latestOrder = null
-            findNavController().popBackStack(R.id.ordersFragment, false)
+            findNavController().navigate(R.id.orders_next_action)
         }
     }
 
