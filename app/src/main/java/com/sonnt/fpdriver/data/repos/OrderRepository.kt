@@ -57,6 +57,23 @@ class OrderRepository private constructor(){
         }
     }
 
+    suspend fun cancelOrder(): Boolean {
+        val orderId = latestOrder?.orderId ?: return false
+
+        val response = callApi {
+            NetworkModule.orderService.cancelOrder(orderId)
+        }
+
+        return when (response) {
+            is ApiResult.Success -> {
+               true
+            }
+            is ApiResult.Failed -> {
+                false
+            }
+        }
+    }
+
     companion object {
         val shared = OrderRepository()
     }

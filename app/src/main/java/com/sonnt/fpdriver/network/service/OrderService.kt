@@ -13,6 +13,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface OrderService {
     @GET("/driver/order/get-active-order")
@@ -32,4 +33,7 @@ interface OrderService {
 
     @POST("driver/order/confirm-completed-order")
     suspend fun confirmCompletedOrder(@Body body: ConfirmCompletedOrderRequest): Response<BaseResponse>
+
+    @GET("merchant/order/cancel-order")
+    suspend fun cancelOrder(@Query("orderId") orderId: Long): Response<BaseResponse>
 }

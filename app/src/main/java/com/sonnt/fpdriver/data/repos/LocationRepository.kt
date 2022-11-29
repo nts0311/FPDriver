@@ -34,7 +34,13 @@ class LocationRepository private constructor() {
             .shareIn(coroutineScope, replay = 1, started = SharingStarted.WhileSubscribed())
 
     fun toAddress(location: Location): Address? {
-        geocoder.getFromLocation(location.latitude, location.longitude, 1).firstOrNull()?.let { address ->
+
+        return Address(
+            lat = location.latitude,
+            lng = location.longitude
+        )
+
+       /* geocoder.getFromLocation(location.latitude, location.longitude, 1).firstOrNull()?.let { address ->
             return Address(
                 ward = address.subAdminArea,
                 district = address.subAdminArea,
@@ -45,7 +51,7 @@ class LocationRepository private constructor() {
             )
         }
 
-        return null
+        return null*/
     }
 
     companion object {

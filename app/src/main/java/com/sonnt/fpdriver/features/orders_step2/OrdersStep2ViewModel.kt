@@ -30,6 +30,7 @@ class OrdersStep2ViewModel : OrdersDestinationInfoViewModel() {
     """.trimIndent()
 
     val onApiSuccess = MutableLiveData<Boolean>()
+    val cancelOrderResult = MutableLiveData<Boolean>()
 
     fun arrivedAtMerchant() {
         viewModelScope.launch {
@@ -46,6 +47,13 @@ class OrdersStep2ViewModel : OrdersDestinationInfoViewModel() {
                 is ApiResult.Success -> onApiSuccess.value = true
                 is ApiResult.Failed -> error("Xác nhận yêu cầu thất bại!")
             }
+        }
+    }
+
+    fun cancelOrder() {
+        viewModelScope.launch {
+            val cancelOrderResult = OrderRepository.shared.cancelOrder()
+            this@OrdersStep2ViewModel.cancelOrderResult.value = cancelOrderResult
         }
     }
 

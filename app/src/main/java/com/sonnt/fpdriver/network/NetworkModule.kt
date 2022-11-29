@@ -17,7 +17,7 @@ object NetworkModule {
     var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(Endpoint.BASE_URL)
         .client(OkHttpClient.Builder()
-            .connectTimeout(45, TimeUnit.SECONDS)
+            .connectTimeout(120, TimeUnit.SECONDS)
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
             })

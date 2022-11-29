@@ -22,6 +22,10 @@
         <action
             android:id="@+id/orders_next_action"
             app:destination="@id/orderStep3Fragment" />
+        <action
+            android:id="@+id/nav_to_order_step1"
+            app:destination="@id/ordersFragment"
+            app:popUpTo="@id/ordersFragment" />
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
