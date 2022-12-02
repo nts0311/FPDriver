@@ -33,7 +33,7 @@ class OrdersStep2Fragment : OrdersDestinationInfoFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setActionBarTitle("Đi đến nhà hàng")
-        binding.viewModel = viewModel
+        binding?.viewModel = viewModel
         setupViewModel()
     }
 
@@ -62,7 +62,8 @@ class OrdersStep2Fragment : OrdersDestinationInfoFragment() {
 
         viewModel.cancelOrderResult.observe(viewLifecycleOwner) {isSuccess ->
             if (isSuccess) {
-                findNavController().navigate(R.id.nav_to_order_step1)
+                //findNavController().navigate(R.id.nav_to_order_step1)
+                findNavController().navigateUp()
             } else {
                 requireContext().createDialog(content = "Lỗi khi huỷ đơn hàng")
             }

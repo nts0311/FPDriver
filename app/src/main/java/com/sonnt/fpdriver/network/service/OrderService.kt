@@ -34,6 +34,6 @@ interface OrderService {
     @POST("driver/order/confirm-completed-order")
     suspend fun confirmCompletedOrder(@Body body: ConfirmCompletedOrderRequest): Response<BaseResponse>
 
-    @GET("merchant/order/cancel-order")
+    @GET("driver/order/cancel-order")
     suspend fun cancelOrder(@Query("orderId") orderId: Long): Response<BaseResponse>
 }

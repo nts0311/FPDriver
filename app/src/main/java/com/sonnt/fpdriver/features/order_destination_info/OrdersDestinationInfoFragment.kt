@@ -21,8 +21,8 @@ abstract class OrdersDestinationInfoFragment : BaseMapFragment<FragmentOrdersDes
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.fragment = this
-        binding.viewModel = viewModel
+        binding?.fragment = this
+        binding?.viewModel = viewModel
     }
 
     abstract fun buttonConfirmClicked()

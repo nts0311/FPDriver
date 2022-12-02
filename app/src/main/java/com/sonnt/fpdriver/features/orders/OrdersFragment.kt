@@ -21,7 +21,7 @@ class OrdersFragment : BaseMapFragment<FragmentOrdersBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.viewModel = viewModel
+        binding!!.viewModel = viewModel
 
         setupView()
         setupData()
@@ -29,10 +29,16 @@ class OrdersFragment : BaseMapFragment<FragmentOrdersBinding>() {
 
     private fun setupView() {
         setActionBarTitle("Đơn hàng mới")
+
+        viewModel.hasOrder.observe(viewLifecycleOwner) {hasOrder ->
+            val a = this@OrdersFragment
+            a.binding?.mainLayout?.visibility = if (hasOrder) View.VISIBLE else View.GONE
+            a.binding?.emptyViewLayout?.visibility = if (hasOrder) View.GONE else View.VISIBLE
+        }
     }
 
     private fun setupData() {
-        viewModel.orderInfo?.observe(viewLifecycleOwner) {
+        viewModel.orderInfo.observe(viewLifecycleOwner) {
             if (it.fromAddress.lat == null || it.fromAddress.lng == null
                 || it.toAddress.lat == null || it.toAddress.lng == null) {
                 return@observe

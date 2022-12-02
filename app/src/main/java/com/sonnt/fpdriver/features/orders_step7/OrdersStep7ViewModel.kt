@@ -11,6 +11,7 @@ import com.cloudinary.android.callback.UploadCallback
 import com.sonnt.fpdriver.FpDriverApplication
 import com.sonnt.fpdriver.data.repos.OrderRepository
 import com.sonnt.fpdriver.features._base.BaseViewModel
+import com.sonnt.fpdriver.features._base.SingleLiveEvent
 import com.sonnt.fpdriver.features.order_transfer_confirmation.OrdersTransferConfirmationViewModel
 import com.sonnt.fpdriver.features.orders_step4.ConfirmReceiveOrderRequest
 import com.sonnt.fpdriver.model.OrderInfo
@@ -25,7 +26,7 @@ class OrdersStep7ViewModel: OrdersTransferConfirmationViewModel() {
     override val price: LiveData<String>
         get() = orderInfo.map { it.paymentInfo.calculatePrice().formatCurrency() }
 
-    val onApiSuccess = MutableLiveData<Boolean>()
+    val onApiSuccess = SingleLiveEvent<Boolean>()
 
     fun confirmDeliveredOrderToCustomer() {
 

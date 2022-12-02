@@ -4,6 +4,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -19,6 +20,7 @@ class FcmService: FirebaseMessagingService() {
         if (remoteMessage.data.isNotEmpty()) {
             val title = remoteMessage.data["title"] ?: ""
             val content = remoteMessage.data["content"] ?: ""
+            Log.d("FCM", "$title:$content")
             createNotification(title, content)
         }
     }
@@ -34,7 +36,7 @@ class FcmService: FirebaseMessagingService() {
     fun createNotification(title: String, content: String) {
         createNotificationChannel()
         var builder = NotificationCompat.Builder(this, "fpdriver_noti_channel")
-            //.setSmallIcon(R.drawable.)
+            .setSmallIcon(R.mipmap.ic_launcher)
             .setContentTitle(title)
             .setContentText(content)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)

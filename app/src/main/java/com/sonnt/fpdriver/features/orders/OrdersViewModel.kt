@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.sonnt.fpdriver.data.repos.OrderRepository
 import com.sonnt.fpdriver.di.AppModule
 import com.sonnt.fpdriver.features._base.BaseViewModel
+import com.sonnt.fpdriver.features._base.SingleLiveEvent
 import com.sonnt.fpdriver.message.WSConnectedEvent
 import com.sonnt.fpdriver.model.OrderInfo
 import com.sonnt.fpdriver.network.ApiResult
@@ -24,24 +25,20 @@ class OrdersViewModel: BaseViewModel() {
     val limitTimeAcceptOrder = 60000L
     val interval = 1000L
 
-//    private val newOrderRequestFlow = OrderRepository.shared.newOrderRequestFlow
-//        ?.onEach {
-//            hasOrder.value = true
-//            startTimer()
-//        }
-
-    val orderInfo = MutableLiveData<OrderInfo>() //newOrderRequestFlow?.asLiveData()
-    val hasOrder = MutableLiveData(false)
+    val orderInfo = MutableLiveData<OrderInfo>()
+    val hasOrder = MutableLiveData<Boolean>()
     val submitButtonText = MutableLiveData("Chấp nhận")
 
-    val onAcceptOrderSuccess = MutableLiveData<Boolean>()
+    val onAcceptOrderSuccess = SingleLiveEvent<Boolean>()
+
+    private var timer: CountDownTimer? = null
 
     init {
         EventBus.getDefault().register(this)
     }
 
     private fun startTimer() {
-        object : CountDownTimer(limitTimeAcceptOrder, interval) {
+        timer = object : CountDownTimer(limitTimeAcceptOrder, interval) {
             override fun onTick(millisUntilFinished: Long) {
                 submitButtonText.value = "Chấp nhận(${millisUntilFinished / 1000})"
             }
@@ -55,6 +52,7 @@ class OrdersViewModel: BaseViewModel() {
 
     fun clearOrder() {
         hasOrder.value = false
+        timer?.cancel()
     }
 
     fun confirmReceiveOrder() {

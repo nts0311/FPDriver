@@ -18,10 +18,10 @@
         tools:context=".features.orders.OrdersFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/root_layout"
+            android:id="@+id/emptyViewLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="@{viewModel.hasOrder ? View.GONE : View.VISIBLE}">
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -37,15 +37,16 @@
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Bạn chưa có đơn hàng mới nào." />
+                    android:text="Bạn chưa có đơn hàng nào" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mainLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="@{viewModel.hasOrder ? View.VISIBLE : View.GONE}">
+            android:visibility="gone">
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
@@ -311,6 +312,7 @@
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </FrameLayout>
 
 </layout>

@@ -30,9 +30,9 @@ abstract class OrdersTransferConfirmationFragment : BaseFragment<FragmentOrderTr
 
     private fun setupViews() {
         setActionBarTitle("Xác nhận lấy món")
-        binding.viewModel = viewModel
-        binding.fragment = this
-        binding.addImageButton.setOnClickListener {
+        binding?.viewModel = viewModel
+        binding?.fragment = this
+        binding?.addImageButton?.setOnClickListener {
             ImagePicker.with(this)
                 .start()
         }
@@ -53,9 +53,13 @@ abstract class OrdersTransferConfirmationFragment : BaseFragment<FragmentOrderTr
     }
 
     private fun setBillImage(uri: Uri) {
-        Glide.with(this)
-            .load(uri)
-            .into(binding.billImageview)
-        viewModel.uploadBillImage(uri)
+        binding?.billImageview?.also {
+            Glide.with(this)
+                .load(uri)
+                .into(it)
+            viewModel.uploadBillImage(uri)
+        }
+
+
     }
 }

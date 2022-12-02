@@ -28,8 +28,8 @@ abstract class OrderDetailFragment : BaseFragment<FragmentOrderDetailBinding>() 
     }
 
     private fun setupViews() {
-        binding.viewModel = viewModel
-        binding.fragment = this
+        binding?.viewModel = viewModel
+        binding?.fragment = this
     }
 
     fun call() {
@@ -42,7 +42,7 @@ abstract class OrderDetailFragment : BaseFragment<FragmentOrderDetailBinding>() 
         viewModel.orderInfo.observe(viewLifecycleOwner) {
             val adapter = BaseRecyclerViewAdapter<OrderedProductItem, ItemOrderItemBinding>(R.layout.item_order_item)
             adapter.items = it.item
-            binding.orderItemsRv.apply {
+            binding?.orderItemsRv?.apply {
                 this.adapter = adapter
                 layoutManager = LinearLayoutManager(requireContext())
             }

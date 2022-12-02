@@ -2,6 +2,7 @@ package com.sonnt.fpdriver.features.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
@@ -13,11 +14,18 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.messaging.FirebaseMessaging
 import com.sonnt.fpdriver.R
 import com.sonnt.fpdriver.data.repos.OrderRepository
 import com.sonnt.fpdriver.features._base.BaseActivity
+import com.sonnt.fpdriver.features._base.createDialog
+import com.sonnt.fpdriver.network.NetworkModule
+import com.sonnt.fpdriver.network.dto.request.UpdateFcmTokenRequest
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainActivity: BaseActivity() {
     private val viewModel: MainActivityViewModel by viewModels()
@@ -34,10 +42,28 @@ class MainActivity: BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        updateFcmToken()
         setupViews()
         bindViewModel()
         viewModel.getActiveOrder()
     }
+
+    private fun updateFcmToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+            Log.d("FCM", token)
+
+            GlobalScope.launch {
+                NetworkModule.authService.updateFcmToken(UpdateFcmTokenRequest(fcmToken = token))
+            }
+        })
+    }
+
 
     private fun setupViews() {
         val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
@@ -60,7 +86,7 @@ class MainActivity: BaseActivity() {
         }
 
         viewModel.orderCanceled?.observe(this) {reason ->
-            createDialog(content = "Đơn hàng đã bị huỷ. Lý do: $reason")
+            this@MainActivity.createDialog(content = "Đơn hàng đã bị huỷ. Lý do: $reason")
             navController.navigate(R.id.ordersFragment)
         }
     }
