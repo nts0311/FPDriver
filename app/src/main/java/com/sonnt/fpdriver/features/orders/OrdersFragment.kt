@@ -52,6 +52,7 @@ class OrdersFragment : BaseMapFragment<FragmentOrdersBinding>() {
 
         viewModel.onAcceptOrderSuccess.observe(viewLifecycleOwner) {
             viewModel.clearOrder()
+            listMarker = listOf()
             findNavController().navigate(R.id.orders_next_action)
         }
 
